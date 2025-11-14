@@ -9,6 +9,9 @@
     "type": "git",
     "url": "git+https://github.com/ftyapps/ui_factory_ftyapps.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "dist",
     "README.md"
