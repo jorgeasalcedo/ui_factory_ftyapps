@@ -412,4 +412,4 @@ ComponentName/
 
 ## 📄 Licencia
 
-MIT © BuenaTuCompra Team
+MIT © ftyapps Team
