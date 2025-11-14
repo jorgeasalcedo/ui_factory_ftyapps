@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Factory - Demo Visual Interactivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .demo-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .demo-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .demo-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .demo-card h3 {
+            color: #495057;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-card h3::before {
+            content: "●";
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .demo-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .demo-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .demo-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.75rem;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        /* Estilos para Buttons */
+        .demo-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .demo-button.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            box-shadow: none;
+        }
+
+        .demo-button.secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .demo-button.danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .demo-button.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .demo-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Estilos para Inputs */
+        .demo-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .demo-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .demo-input:hover {
+            border-color: #adb5bd;
+        }
+
+        .demo-input::placeholder {
+            color: #adb5bd;
+        }
+
+        /* Estilos para Select */
+        .demo-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .demo-select:hover {
+            border-color: #adb5bd;
+        }
+
+        /* Estilos para Text */
+        .demo-text {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .demo-text.title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-text.subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+
+        /* Estilos para Links */
+        .demo-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+
+        .demo-link:hover {
+            color: #764ba2;
+            border-bottom-color: #764ba2;
+        }
+
+        /* Estilos para Radio Buttons */
+        .demo-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .demo-radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .demo-radio-label:hover {
+            background: #f8f9fa;
+        }
+
+        .demo-radio-input {
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .output-box {
+            background: #e7f3ff;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #004085;
+        }
+
+        .output-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 1rem;
+            }
+
+            .demo-section {
+                padding: 1.5rem;
+            }
+
+            .demo-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎨 UI Factory Demo</h1>
+            <p>Componentes React con estilos dinámicos desde base de datos</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <h3>16</h3>
+                <p>Componentes</p>
+            </div>
+            <div class="stat-card">
+                <h3>78</h3>
+                <p>Tests</p>
+            </div>
+            <div class="stat-card">
+                <h3>100%</h3>
+                <p>TypeScript</p>
+            </div>
+            <div class="stat-card">
+                <h3>✓</h3>
+                <p>Production Ready</p>
+            </div>
+        </div>
+
+        <!-- Buttons Demo -->
+        <div class="demo-section">
+            <h2>Botones Interactivos</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Variantes de Botones</h3>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <span class="demo-label">Botón Primary</span>
+                            <button class="demo-button" onclick="showAlert('Primary Button')">
+                                Comprar Ahora
+                            </button>
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Botón Secondary</span>
+                            <button class="demo-button secondary" onclick="showAlert('Secondary Button')">
+                                Ver Más
+                            </button>
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Botón Danger</span>
+                            <button class="demo-button danger" onclick="showAlert('Danger Button')">
+                                Eliminar
+                            </button>
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Botón Success</span>
+                            <button class="demo-button success" onclick="showAlert('Success Button')">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Estados de Botones</h3>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <span class="demo-label">Botón Normal</span>
+                            <button class="demo-button" onclick="showAlert('Normal State')">
+                                Haz Hover
+                            </button>
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Botón Deshabilitado</span>
+                            <button class="demo-button" disabled>
+                                No Disponible
+                            </button>
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Grupo de Botones</span>
+                            <div class="button-group">
+                                <button class="demo-button" onclick="showAlert('Button 1')">Opción 1</button>
+                                <button class="demo-button secondary" onclick="showAlert('Button 2')">Opción 2</button>
+                                <button class="demo-button secondary" onclick="showAlert('Button 3')">Opción 3</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inputs Demo -->
+        <div class="demo-section">
+            <h2>Campos de Entrada</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Tipos de Input</h3>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <span class="demo-label">Búsqueda</span>
+                            <input type="search" class="demo-input" placeholder="Buscar productos..." oninput="updateOutput('search', this.value)">
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Email</span>
+                            <input type="email" class="demo-input" placeholder="tu@email.com" oninput="updateOutput('email', this.value)">
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Contraseña</span>
+                            <input type="password" class="demo-input" placeholder="••••••••" oninput="updateOutput('password', this.value.length + ' caracteres')">
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Número</span>
+                            <input type="number" class="demo-input" placeholder="123" min="0" oninput="updateOutput('number', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Resultados en Tiempo Real</h3>
+                    <div class="demo-content">
+                        <div class="output-box">
+                            <span class="output-label">Valores capturados:</span>
+                            <div id="output">
+                                <div>Buscar: <span id="search-output">-</span></div>
+                                <div>Email: <span id="email-output">-</span></div>
+                                <div>Password: <span id="password-output">-</span></div>
+                                <div>Número: <span id="number-output">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Select Demo -->
+        <div class="demo-section">
+            <h2>Listas Desplegables</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Select Básico</h3>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <span class="demo-label">Selecciona tu país</span>
+                            <select class="demo-select" onchange="updateOutput('country', this.options[this.selectedIndex].text)">
+                                <option value="">Seleccionar país...</option>
+                                <option value="co">Colombia</option>
+                                <option value="mx">México</option>
+                                <option value="ar">Argentina</option>
+                                <option value="es">España</option>
+                                <option value="us">Estados Unidos</option>
+                            </select>
+                        </div>
+                        <div class="demo-group">
+                            <span class="demo-label">Categoría de producto</span>
+                            <select class="demo-select" onchange="updateOutput('category', this.options[this.selectedIndex].text)">
+                                <option value="">Seleccionar categoría...</option>
+                                <option value="electronics">Electrónica</option>
+                                <option value="clothing">Ropa y Accesorios</option>
+                                <option value="home">Hogar y Jardín</option>
+                                <option value="sports">Deportes</option>
+                                <option value="books">Libros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Selecciones Actuales</h3>
+                    <div class="demo-content">
+                        <div class="output-box">
+                            <span class="output-label">Opciones seleccionadas:</span>
+                            <div id="select-output">
+                                <div>País: <span id="country-output">-</span></div>
+                                <div>Categoría: <span id="category-output">-</span></div>
+                                <div>Forma de pago: <span id="payment-output">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Radio Buttons Demo -->
+        <div class="demo-section">
+            <h2>Botones de Radio</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Opciones de Envío</h3>
+                    <div class="demo-content">
+                        <div class="demo-radio-group">
+                            <label class="demo-radio-label">
+                                <input type="radio" name="shipping" value="standard" class="demo-radio-input" onchange="updateOutput('shipping', 'Envío Estándar (5-7 días) - Gratis')">
+                                <span>Envío Estándar (5-7 días) - Gratis</span>
+                            </label>
+                            <label class="demo-radio-label">
+                                <input type="radio" name="shipping" value="express" class="demo-radio-input" onchange="updateOutput('shipping', 'Envío Express (2-3 días) - $9.99')">
+                                <span>Envío Express (2-3 días) - $9.99</span>
+                            </label>
+                            <label class="demo-radio-label">
+                                <input type="radio" name="shipping" value="overnight" class="demo-radio-input" onchange="updateOutput('shipping', 'Envío Overnight (24h) - $19.99')">
+                                <span>Envío Overnight (24h) - $19.99</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Método de Pago</h3>
+                    <div class="demo-content">
+                        <div class="demo-radio-group">
+                            <label class="demo-radio-label">
+                                <input type="radio" name="payment" value="credit" class="demo-radio-input" onchange="updateOutput('payment', '💳 Tarjeta de Crédito')">
+                                <span>💳 Tarjeta de Crédito</span>
+                            </label>
+                            <label class="demo-radio-label">
+                                <input type="radio" name="payment" value="debit" class="demo-radio-input" onchange="updateOutput('payment', '💰 Tarjeta de Débito')">
+                                <span>💰 Tarjeta de Débito</span>
+                            </label>
+                            <label class="demo-radio-label">
+                                <input type="radio" name="payment" value="paypal" class="demo-radio-input" onchange="updateOutput('payment', '🅿️ PayPal')">
+                                <span>🅿️ PayPal</span>
+                            </label>
+                            <label class="demo-radio-label">
+                                <input type="radio" name="payment" value="transfer" class="demo-radio-input" onchange="updateOutput('payment', '🏦 Transferencia Bancaria')">
+                                <span>🏦 Transferencia Bancaria</span>
+                            </label>
+                        </div>
+                        <div class="output-box" style="margin-top: 1rem;">
+                            <span class="output-label">Selección actual:</span>
+                            <div>Envío: <span id="shipping-output">-</span></div>
+                            <div>Pago: <span id="payment-output">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography Demo -->
+        <div class="demo-section">
+            <h2>Tipografía y Enlaces</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Diferentes Textos</h3>
+                    <div class="demo-content">
+                        <p class="demo-text title">Este es un título principal</p>
+                        <p class="demo-text subtitle">Este es un subtítulo descriptivo</p>
+                        <p class="demo-text">Este es un párrafo normal con texto de ejemplo para mostrar cómo se ve el contenido regular en el diseño.</p>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Enlaces</h3>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <a href="#" class="demo-link" onclick="event.preventDefault(); showAlert('Link clicked!')">Ver más productos →</a>
+                        </div>
+                        <div class="demo-group">
+                            <a href="#" class="demo-link" onclick="event.preventDefault(); showAlert('Terms clicked!')">Términos y condiciones</a>
+                        </div>
+                        <div class="demo-group">
+                            <a href="#" class="demo-link" onclick="event.preventDefault(); showAlert('Contact clicked!')">Contacto y soporte</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hybrid Components -->
+        <div class="demo-section">
+            <h2>🔀 Componentes Híbridos</h2>
+            <div class="demo-grid">
+                <div class="demo-card" style="grid-column: 1 / -1;">
+                    <h3>MultiSelect con Chips</h3>
+                    <p class="component-description">Selección múltiple con búsqueda y visualización de chips</p>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <span class="demo-label">Tecnologías de desarrollo:</span>
+                            <div id="tech-multiselect"></div>
+                            <div id="tech-chips-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                                <!-- Chips generados dinámicamente -->
+                            </div>
+                            <div class="output-box" style="margin-top: 1rem;">
+                                <strong>Seleccionados:</strong> <span id="tech-output">Ninguno</span>
+                            </div>
+                        </div>
+
+                        <div class="demo-group">
+                            <span class="demo-label">Categorías de productos:</span>
+                            <div id="category-multiselect"></div>
+                            <div id="category-chips-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                                <!-- Chips generados dinámicamente -->
+                            </div>
+                            <div class="output-box" style="margin-top: 1rem;">
+                                <strong>Filtros activos:</strong> <span id="category-output">Ninguno</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-card" style="grid-column: 1 / -1;">
+                    <h3>Chips Independientes</h3>
+                    <p class="component-description">Tags removibles con diferentes variantes y tamaños</p>
+                    <div class="demo-content">
+                        <div class="demo-group">
+                            <span class="demo-label">Variantes de color:</span>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem;">
+                                <div id="chip-default"></div>
+                                <div id="chip-primary"></div>
+                                <div id="chip-success"></div>
+                                <div id="chip-warning"></div>
+                                <div id="chip-danger"></div>
+                            </div>
+                        </div>
+
+                        <div class="demo-group">
+                            <span class="demo-label">Diferentes tamaños:</span>
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">
+                                <div id="chip-small"></div>
+                                <div id="chip-medium"></div>
+                                <div id="chip-large"></div>
+                            </div>
+                        </div>
+
+                        <div class="demo-group">
+                            <span class="demo-label">Chips removibles (haz clic en la ×):</span>
+                            <div id="removable-chips-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                                <!-- Chips removibles generados dinámicamente -->
+                            </div>
+                            <button class="demo-button" onclick="resetRemovableChips()" style="margin-top: 1rem;">Restaurar Chips</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Example -->
+        <div class="demo-section">
+            <h2>Formulario Completo de Ejemplo</h2>
+            <div class="demo-grid">
+                <div class="demo-card" style="grid-column: 1 / -1; max-width: 800px; margin: 0 auto;">
+                    <h3>Formulario de Checkout</h3>
+                    <div class="demo-content">
+                        <form onsubmit="event.preventDefault(); handleFormSubmit();">
+                            <div class="demo-group">
+                                <span class="demo-label">Nombre completo</span>
+                                <input type="text" class="demo-input" placeholder="Juan Pérez" id="form-name" required>
+                            </div>
+
+                            <div class="demo-group">
+                                <span class="demo-label">Email</span>
+                                <input type="email" class="demo-input" placeholder="juan@ejemplo.com" id="form-email" required>
+                            </div>
+
+                            <div class="demo-group">
+                                <span class="demo-label">País</span>
+                                <select class="demo-select" id="form-country" required>
+                                    <option value="">Seleccionar país...</option>
+                                    <option value="co">Colombia</option>
+                                    <option value="mx">México</option>
+                                    <option value="ar">Argentina</option>
+                                </select>
+                            </div>
+
+                            <div class="demo-group">
+                                <span class="demo-label">Método de envío</span>
+                                <div class="demo-radio-group">
+                                    <label class="demo-radio-label">
+                                        <input type="radio" name="form-shipping" value="standard" class="demo-radio-input" required>
+                                        <span>Estándar - Gratis</span>
+                                    </label>
+                                    <label class="demo-radio-label">
+                                        <input type="radio" name="form-shipping" value="express" class="demo-radio-input">
+                                        <span>Express - $9.99</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="demo-group">
+                                <span class="demo-label">Método de pago</span>
+                                <div class="demo-radio-group">
+                                    <label class="demo-radio-label">
+                                        <input type="radio" name="form-payment" value="credit" class="demo-radio-input" required>
+                                        <span>💳 Tarjeta de Crédito</span>
+                                    </label>
+                                    <label class="demo-radio-label">
+                                        <input type="radio" name="form-payment" value="paypal" class="demo-radio-input">
+                                        <span>🅿️ PayPal</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="button-group" style="margin-top: 2rem;">
+                                <button type="submit" class="demo-button">Completar Compra</button>
+                                <button type="button" class="demo-button secondary" onclick="resetForm()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Funciones auxiliares
+        function showAlert(message) {
+            alert('✓ ' + message + ' activado!');
+        }
+
+        function updateOutput(key, value) {
+            const element = document.getElementById(key + '-output');
+            if (element) {
+                element.textContent = value || '-';
+            }
+        }
+
+        function handleFormSubmit() {
+            const name = document.getElementById('form-name').value;
+            const email = document.getElementById('form-email').value;
+            const country = document.getElementById('form-country').options[document.getElementById('form-country').selectedIndex].text;
+            const shipping = document.querySelector('input[name="form-shipping"]:checked')?.nextElementSibling.textContent;
+            const payment = document.querySelector('input[name="form-payment"]:checked')?.nextElementSibling.textContent;
+
+            alert(`✓ Formulario enviado exitosamente!\n\nNombre: ${name}\nEmail: ${email}\nPaís: ${country}\nEnvío: ${shipping}\nPago: ${payment}`);
+        }
+
+        function resetForm() {
+            if (confirm('¿Estás seguro de que quieres cancelar?')) {
+                document.querySelector('form').reset();
+                showAlert('Formulario reiniciado');
+            }
+        }
+
+        // === MULTISELECT Y CHIPS ===
+        
+        // Datos para MultiSelects
+        const techOptions = [
+            { value: 'react', label: 'React' },
+            { value: 'vue', label: 'Vue.js' },
+            { value: 'angular', label: 'Angular' },
+            { value: 'svelte', label: 'Svelte' },
+            { value: 'nextjs', label: 'Next.js' },
+            { value: 'nuxt', label: 'Nuxt.js' },
+            { value: 'gatsby', label: 'Gatsby' }
+        ];
+
+        const categoryOptions = [
+            { value: 'electronics', label: 'Electrónica' },
+            { value: 'fashion', label: 'Moda' },
+            { value: 'home', label: 'Hogar' },
+            { value: 'sports', label: 'Deportes' },
+            { value: 'books', label: 'Libros' },
+            { value: 'toys', label: 'Juguetes' }
+        ];
+
+        // Estado de selecciones
+        let techSelected = [];
+        let categorySelected = [];
+
+        // Función para crear MultiSelect visual (simulación HTML pura)
+        function createMultiSelect(containerId, options, onChangeCallback) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            // Crear estructura del multiselect
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'position: relative; width: 100%;';
+
+            const trigger = document.createElement('div');
+            trigger.style.cssText = `
+                padding: 0.75rem 1rem;
+                background: white;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.2s;
+            `;
+            trigger.innerHTML = `
+                <span style="color: #666;">Selecciona opciones...</span>
+                <span style="transition: transform 0.2s;">▼</span>
+            `;
+
+            const dropdown = document.createElement('div');
+            dropdown.style.cssText = `
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0;
+                right: 0;
+                background: white;
+                border: 2px solid #667eea;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                max-height: 300px;
+                overflow-y: auto;
+                z-index: 1000;
+                display: none;
+            `;
+
+            // Search input
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = 'Buscar...';
+            searchInput.style.cssText = `
+                width: 100%;
+                padding: 0.75rem;
+                border: none;
+                border-bottom: 1px solid #e0e0e0;
+                outline: none;
+            `;
+
+            dropdown.appendChild(searchInput);
+
+            // Options container
+            const optionsContainer = document.createElement('div');
+            dropdown.appendChild(optionsContainer);
+
+            // Render options
+            function renderOptions(filter = '') {
+                optionsContainer.innerHTML = '';
+                const filtered = options.filter(opt => 
+                    opt.label.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                filtered.forEach(option => {
+                    const label = document.createElement('label');
+                    label.style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        padding: 0.75rem 1rem;
+                        cursor: pointer;
+                        transition: background 0.2s;
+                    `;
+                    label.onmouseover = () => label.style.background = '#f5f5f5';
+                    label.onmouseout = () => label.style.background = 'transparent';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.style.cssText = 'margin-right: 0.75rem; cursor: pointer;';
+                    checkbox.value = option.value;
+                    
+                    checkbox.onchange = () => onChangeCallback();
+
+                    const text = document.createElement('span');
+                    text.textContent = option.label;
+
+                    label.appendChild(checkbox);
+                    label.appendChild(text);
+                    optionsContainer.appendChild(label);
+                });
+            }
+
+            renderOptions();
+
+            searchInput.oninput = (e) => renderOptions(e.target.value);
+
+            // Toggle dropdown
+            let isOpen = false;
+            trigger.onclick = () => {
+                isOpen = !isOpen;
+                dropdown.style.display = isOpen ? 'block' : 'none';
+                trigger.style.borderColor = isOpen ? '#667eea' : '#e0e0e0';
+                trigger.querySelector('span:last-child').style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0)';
+            };
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (!wrapper.contains(e.target)) {
+                    isOpen = false;
+                    dropdown.style.display = 'none';
+                    trigger.style.borderColor = '#e0e0e0';
+                    trigger.querySelector('span:last-child').style.transform = 'rotate(0)';
+                }
+            });
+
+            wrapper.appendChild(trigger);
+            wrapper.appendChild(dropdown);
+            container.appendChild(wrapper);
+
+            return {
+                getSelected: () => {
+                    const checkboxes = optionsContainer.querySelectorAll('input[type="checkbox"]:checked');
+                    return Array.from(checkboxes).map(cb => ({
+                        value: cb.value,
+                        label: cb.nextSibling.textContent
+                    }));
+                },
+                updateTrigger: (count) => {
+                    trigger.querySelector('span:first-child').textContent = 
+                        count > 0 ? `${count} seleccionado${count > 1 ? 's' : ''}` : 'Selecciona opciones...';
+                }
+            };
+        }
+
+        // Función para crear un chip
+        function createChip(label, variant = 'primary', removable = false, onRemove = null) {
+            const colors = {
+                default: { bg: '#e9ecef', color: '#495057' },
+                primary: { bg: '#667eea', color: 'white' },
+                success: { bg: '#28a745', color: 'white' },
+                warning: { bg: '#ffc107', color: '#212529' },
+                danger: { bg: '#dc3545', color: 'white' }
+            };
+
+            const color = colors[variant] || colors.default;
+
+            const chip = document.createElement('div');
+            chip.style.cssText = `
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 0.75rem;
+                background: ${color.bg};
+                color: ${color.color};
+                border-radius: 20px;
+                font-size: 0.875rem;
+                font-weight: 500;
+            `;
+
+            const labelSpan = document.createElement('span');
+            labelSpan.textContent = label;
+            chip.appendChild(labelSpan);
+
+            if (removable && onRemove) {
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML = '×';
+                removeBtn.style.cssText = `
+                    background: none;
+                    border: none;
+                    color: ${color.color};
+                    cursor: pointer;
+                    font-size: 1.125rem;
+                    line-height: 1;
+                    padding: 0;
+                    width: 16px;
+                    height: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: opacity 0.2s;
+                `;
+                removeBtn.onmouseover = () => removeBtn.style.opacity = '0.7';
+                removeBtn.onmouseout = () => removeBtn.style.opacity = '1';
+                removeBtn.onclick = onRemove;
+                chip.appendChild(removeBtn);
+            }
+
+            return chip;
+        }
+
+        // Inicializar tech multiselect
+        const techMultiSelect = createMultiSelect('tech-multiselect', techOptions, () => {
+            const selected = techMultiSelect.getSelected();
+            techSelected = selected;
+            
+            // Update chips
+            const chipsContainer = document.getElementById('tech-chips-container');
+            chipsContainer.innerHTML = '';
+            selected.forEach(item => {
+                const chip = createChip(item.label, 'primary', true, () => {
+                    // Remove selection
+                    const checkbox = document.querySelector(`#tech-multiselect input[value="${item.value}"]`);
+                    if (checkbox) {
+                        checkbox.checked = false;
+                        checkbox.onchange();
+                    }
+                });
+                chipsContainer.appendChild(chip);
+            });
+
+            // Update output
+            const techOutput = document.getElementById('tech-output');
+            techOutput.textContent = selected.length > 0 ? selected.map(s => s.label).join(', ') : 'Ninguno';
+            
+            // Update trigger
+            techMultiSelect.updateTrigger(selected.length);
+        });
+
+        // Inicializar category multiselect
+        const categoryMultiSelect = createMultiSelect('category-multiselect', categoryOptions, () => {
+            const selected = categoryMultiSelect.getSelected();
+            categorySelected = selected;
+            
+            // Update chips
+            const chipsContainer = document.getElementById('category-chips-container');
+            chipsContainer.innerHTML = '';
+            selected.forEach(item => {
+                const chip = createChip(item.label, 'success', true, () => {
+                    // Remove selection
+                    const checkbox = document.querySelector(`#category-multiselect input[value="${item.value}"]`);
+                    if (checkbox) {
+                        checkbox.checked = false;
+                        checkbox.onchange();
+                    }
+                });
+                chipsContainer.appendChild(chip);
+            });
+
+            // Update output
+            const categoryOutput = document.getElementById('category-output');
+            categoryOutput.textContent = selected.length > 0 ? selected.map(s => s.label).join(', ') : 'Ninguno';
+            
+            // Update trigger
+            categoryMultiSelect.updateTrigger(selected.length);
+        });
+
+        // Chips de variantes
+        document.getElementById('chip-default').appendChild(createChip('Default', 'default'));
+        document.getElementById('chip-primary').appendChild(createChip('Primary', 'primary'));
+        document.getElementById('chip-success').appendChild(createChip('Success', 'success'));
+        document.getElementById('chip-warning').appendChild(createChip('Warning', 'warning'));
+        document.getElementById('chip-danger').appendChild(createChip('Danger', 'danger'));
+
+        // Chips de tamaños
+        const smallChip = createChip('Small', 'primary');
+        smallChip.style.fontSize = '0.75rem';
+        smallChip.style.padding = '0.25rem 0.5rem';
+        document.getElementById('chip-small').appendChild(smallChip);
+
+        document.getElementById('chip-medium').appendChild(createChip('Medium', 'primary'));
+
+        const largeChip = createChip('Large', 'primary');
+        largeChip.style.fontSize = '1rem';
+        largeChip.style.padding = '0.75rem 1rem';
+        document.getElementById('chip-large').appendChild(largeChip);
+
+        // Chips removibles
+        const removableTags = ['JavaScript', 'TypeScript', 'Python', 'Java', 'Go', 'Rust'];
+        
+        function resetRemovableChips() {
+            const container = document.getElementById('removable-chips-container');
+            container.innerHTML = '';
+            removableTags.forEach((tag, index) => {
+                const variants = ['default', 'primary', 'success', 'warning', 'danger'];
+                const variant = variants[index % variants.length];
+                const chip = createChip(tag, variant, true, function() {
+                    this.parentElement.remove();
+                    showAlert(`Chip "${tag}" removido`);
+                });
+                container.appendChild(chip);
+            });
+        }
+
+        // Inicializar chips removibles
+        resetRemovableChips();
+    </script>
+</body>
+</html>
