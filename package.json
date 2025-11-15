@@ -1,5 +1,5 @@
 {
-  "name": "@ftyapps/ui-factory",
+  "name": "@jorgeasalcedo/ui-factory",
   "version": "0.1.0",
   "description": "Sistema de componentes React con estilos dinámicos y comportamientos flexibles",
   "main": "dist/index.js",
@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ftyapps/ui_factory_ftyapps.git"
+    "url": "git+https://github.com/jorgeasalcedo/ui_factory_ftyapps.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -37,9 +37,9 @@
   "author": "FTYApps Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ftyapps/ui_factory_ftyapps/issues"
+    "url": "https://github.com/jorgeasalcedo/ui_factory_ftyapps/issues"
   },
-  "homepage": "https://github.com/ftyapps/ui_factory_ftyapps#readme",
+  "homepage": "https://github.com/jorgeasalcedo/ui_factory_ftyapps#readme",
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
